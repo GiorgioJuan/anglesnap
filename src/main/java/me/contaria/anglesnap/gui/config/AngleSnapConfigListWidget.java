@@ -4,6 +4,7 @@ import me.contaria.anglesnap.AngleSnap;
 import me.contaria.anglesnap.config.Option;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
@@ -19,7 +20,7 @@ public class AngleSnapConfigListWidget extends ElementListWidget<AngleSnapConfig
     private static final int HOVERED_COLOR = ColorHelper.getArgb(100, 200, 200, 200);
 
     public AngleSnapConfigListWidget(MinecraftClient minecraftClient, int width, int height, int y) {
-        super(minecraftClient, width, height, y, 24, 0);
+        super(minecraftClient, width, height, y, 24);
 
         for (Option<?> option : AngleSnap.CONFIG.getOptions()) {
             if (option.hasWidget()) {
@@ -94,19 +95,24 @@ public class AngleSnapConfigListWidget extends ElementListWidget<AngleSnapConfig
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            int x = this.getX();
+            int y = this.getY();
+            int entryWidth = this.getWidth();
+            int entryHeight = this.getHeight();
+
             TextRenderer textRenderer = this.client.textRenderer;
             if (hovered) {
                 context.fill(x, y, x + entryWidth, y + entryHeight, HOVERED_COLOR);
             }
             int textY = y + (entryHeight - textRenderer.fontHeight + 1) / 2;
             context.drawText(textRenderer, this.option.getName(), x + 5, textY, Colors.WHITE, true);
-            this.renderWidgetAt(context, mouseX, mouseY, tickDelta, this.widget, x + 155, y);
+            this.renderWidgetAt(context, mouseX, mouseY, deltaTicks, this.widget, x + 155, y);
         }
 
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            return super.mouseClicked(mouseX, mouseY, button);
+        public boolean mouseClicked(Click click, boolean doubled) {
+            return super.mouseClicked(click, doubled);
         }
     }
 }

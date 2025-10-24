@@ -18,7 +18,8 @@ public class AngleSnapConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(new TextWidget(0, 10, this.width, 15, this.title, this.textRenderer).alignCenter());
+        int titleWidth = this.textRenderer.getWidth(this.title);
+        this.addDrawableChild(new TextWidget((this.width - titleWidth) / 2, 10, titleWidth, 15, this.title, this.textRenderer));
         this.addDrawableChild(new AngleSnapConfigListWidget(this.client, this.width, this.height - 70, 35));
         this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close()).dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
     }
